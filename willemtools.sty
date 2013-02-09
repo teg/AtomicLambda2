@@ -1,0 +1,303 @@
+
+\usepackage{ifthen}
+\usepackage{xargs}
+
+
+% PREPARE FOR BEAMER PRESENTATION
+
+\newcommand\setBeamer{
+	\useoutertheme{default}
+	\setbeamercolor{title}{fg=red!70!black,bg=white!70!red} 
+	\setbeamercolor{frametitle}{fg=red!70!black,bg=white!95!red}
+	\setbeamercolor{normal text}{fg=black,bg=white!95!red}
+	\setbeamercolor{alerted text}{fg=red,bg=white!95!red}
+	\setbeamercolor{item}{fg=red!70!black,bg=white!95!red}
+	\setbeamercolor{palette primary}{fg=red!70!black,bg=white!85!red}
+	\setbeamercolor{palette secondary}{fg=red!70!black,bg=white!85!red}
+	\newxyColor{bgcolor} {1    0.949 0.949}{rgb}{}
+}
+
+
+% CASE SWITCH
+
+% Selects a matching case from a list of <case> - <body> pairs
+%
+%	\SWITCH <tgt> <case-1> <body-1>
+%                 <case-2> <body-2>
+%                        ...
+%                 \DEFAULT <body>
+%
+% if <case-i> == DEFAULT selects <body>
+% if <tgt> /= <case-i> falls through to next line as \SWITCH <tgt>
+% if <tgt> == <case-i> selects <body-i> as
+%	\ENDSWITCH <case-i>
+%
+\newcommand\SWITCH[3]{%
+	\ifthenelse{\equal{#1}{#2}}{\ENDSWITCH{#3}}{%
+	 \ifthenelse{\equal{\DEFAULT}{#2}}{#3}{%
+	  \SWITCH{#1}%
+}}}
+
+% Removes remaining pairs after \SWITCH finds a match
+%
+%   \ENDSWITCH <found> <case-1> <body-1>
+%                      <case-2> <body-2>
+%                             ...
+%                      \DEFAULT <body>
+%
+% if <case-i> == \DEFAULT returns <found>
+% otherwise falls through as \ENDSWITCH <found>
+%
+\newcommand\ENDSWITCH[3]{%
+	\ifthenelse{\equal{#2}{\DEFAULT}}{#1}{\ENDSWITCH{#1}}%
+}
+
+% DEFAULT marker (how to make this a primitive?)
+\newcommand\DEFAULT{DEFAULT}
+
+
+
+% IMPORTING GRAPHICS
+%
+%
+%\newcommand\figurepath{Figures/Figures}
+%\newcommand\scriptpath{Figures}
+%
+%%   \includeFigure (*) [scale] {command} {name}
+%%		(*)	 		forces re-compilation of figure image
+%%		{command}	LaTeX command generating the graphic
+%%		{name}		figure name
+%
+%\makeatletter
+%\newcommand\includeFigure{\@ifstar\includeA\includeB}
+%\makeatother
+%
+%\newcommand\includeA[3][1]{\immediate\write18{\scriptpath/make-fig #2 #3}
+%		 \includeC[#1]{#3}}
+%\newcommand\includeB[3][1]{\IfFileExists{\figurepath/#3.pdf}%
+%		{\includeC[#1]{#3}}%
+%		{\includeA[#1]{#2}{#3}}}
+%\newcommand\includeC[2][1]{\includegraphics[scale=#1]{\figurepath/#2}}
+%
+%
+%
+
+
+% BIBLIOGRAPHY
+
+\newcommand\BIBABBR{\SHORTBIBS}
+
+\newcommand\longJournalNames{\let\BIBABBR=\LONGBIBS}
+\newcommand\shortJournalNames{\let\BIBABBR=\SHORTBIBS}
+
+\newcommandx\LONGBIBS[3][1={},2={}]{%
+	\SWITCH{#3}%
+	{APAL}{Annals of Pure and Applied Logic}%
+	{CLC}{Proc.\ #1 International Workshop on Classical Logic and Computation}%
+	{CSL}{Proc.\ #1 EACSL Annual Conference on Computer Science Logic (CSL'#2)}%
+	{CTCS}{Proc.\ #1th Conference on Category Theory and Computer Science}%
+	{ENTCS}{Electronic Notes in Theoretical Computer Science}%
+	{EPTCS}{Electronic Proceedings in Theoretical Computer Science}%
+	{JPAA}{Journal of Pure and Applied Algebra}%
+	{JSL}{Journal of Symbolic Logic}%
+	{LICS}{Proc.\ #1 Annual IEEE Symposium on Logic in Computer Science (LiCS'#2)}%
+	{LMCS}{Logical Methods in Computer Science}%
+	{LNCS}{Lecture Notes in Computer Science}%
+	{LPAR}{Logic Programming and Automated Reasoning}%
+	{MSCS}{Mathematical Structures in Computer Science}%
+	{POPL}{Proc.\ #1 ACM Symposium on Principles of Programming Languages}%
+	{TAC}{Theory and Applications of Categories}%
+	{TCS}{Theoretical Computer Science}%
+	{TLCA}{Proc.\ #1 International Conference on Typed Lambda Calculi and Applications (TLCA'#2)}%
+	{TOCL}{ACM Transactions on Computational Logic}%
+	\DEFAULT{#3}%
+}
+
+\newcommandx\SHORTBIBS[3][1={},2={}]{%
+	\SWITCH{#3}%
+	{CLC}{Classical Logic and Computation}%
+	{CSL}{CSL'#2}%
+	{CTCS}{Category Theory and Computer Science}%
+	{LICS}{LiCS'#2}%
+	{TLCA}{TLCA'#2}%
+	{TOCL}{ACM Trans.\ Comp. Log.}%
+	\DEFAULT{#3}%
+}
+
+
+
+% THEOREM STYLES
+
+\newcommand\makeTheoremDefs{
+	%%
+	\theoremstyle{definition}
+	\newtheorem{definition}{Definition}
+	%%
+	\theoremstyle{plain}
+	\newtheorem{conjecture} [definition]{Conjecture}
+	\newtheorem{corollary}  [definition]{Corollary}
+	\newtheorem{lemma}      [definition]{Lemma}
+	\newtheorem{proposition}[definition]{Proposition}
+	\newtheorem{theorem}    [definition]{Theorem}
+	%%
+	\newtheorem*{remark}{Remark}
+}
+
+\newenvironment{thmenv}[1]{%
+	\let\innerthmenv\undefined%
+	\let\endinnerthmenv\undefined%
+	\newtheorem*{innerthmenv}{#1}%
+	\begin{innerthmenv}%
+}{
+	\end{innerthmenv}%
+}
+
+
+
+% FAUX BOLD
+
+\newcommand\fauxbold[2][3]{%
+ \ensuremath{%
+ 	\if#10 \makebox[0.00pt][l]{\ensuremath{#2}}\else%
+ 	\if#11 \makebox[0.06pt][l]{\ensuremath{#2}}\else%
+	\if#12 \makebox[0.13pt][l]{\ensuremath{#2}}\else%
+	\if#14 \makebox[0.26pt][l]{\ensuremath{#2}}\else%
+	\if#15 \makebox[0.33pt][l]{\ensuremath{#2}}\else%
+	       \makebox[0.20pt][l]{\ensuremath{#2}} \fi\fi\fi\fi\fi%
+	#2%
+  }}
+
+
+% ROTATION IN 8 FIXED DIRECTIONS
+
+\newcommand\indirection[2]{
+ \SWITCH{#1}
+ {r}{#2}
+ {ur}{\rotatebox[origin=c]{45}{\ensuremath{#2}}}
+ {u}{\rotatebox[origin=c]{90}{\ensuremath{#2}}}
+ {ul}{\rotatebox[origin=c]{135}{\ensuremath{#2}}}
+ {l}{\rotatebox[origin=c]{180}{\ensuremath{#2}}}
+ {dl}{\rotatebox[origin=c]{225}{\ensuremath{#2}}}
+ {d}{\rotatebox[origin=c]{270}{\ensuremath{#2}}}
+ {dr}{\rotatebox[origin=c]{315}{\ensuremath{#2}}}
+ \DEFAULT{}
+}
+
+
+% MORE QUAD SPACING
+
+\newcommand\quads[1]{
+  \SWITCH {#1}
+  1 {\quad}
+  2 {\qquad}
+  3 {\qquad\quad}
+  4 {\qquad\qquad}
+  5 {\qquad\qquad\quad}
+  6 {\qquad\qquad\qquad}
+  \DEFAULT {\quad #1}
+}
+
+\newcommand\qqquad{\qquad\quad}
+\newcommand\qqqquad{\qquad\qquad}
+
+
+% XY COLORSET
+
+\newcommand\setColors{
+%%
+\newxyColor{bgcolor} {1 1 1}{rgb}{}
+%%
+\newxyColor{pink1}{0  0.3  0     0  }{cmyk}{}
+\newxyColor{pink2}{0  0.4  0     0.1}{cmyk}{}
+\newxyColor{pink3}{0  0.5  0     0.2}{cmyk}{}
+%
+\newxyColor{red1}{0   0.7   0.7   0   }{cmyk}{}
+\newxyColor{red2}{0   0.85  0.85  0.07}{cmyk}{}
+\newxyColor{red3}{0   1     1     0.15}{cmyk}{}
+%
+\newxyColor{orange1}{0     0.4   1     0   }{cmyk}{}
+\newxyColor{orange2}{0     0.5   1     0.07}{cmyk}{}
+\newxyColor{orange3}{0     0.6   1     0.15}{cmyk}{}
+%
+\newxyColor{yellow1}{0     0     0.8   0   }{cmyk}{}
+\newxyColor{yellow2}{0     0.1   0.9   0.05}{cmyk}{}
+\newxyColor{yellow3}{0     0.2   1     0.10}{cmyk}{}
+%
+\newxyColor{green1}{0.2   0     0.4   0  }{cmyk}{}
+\newxyColor{green2}{0.3   0     0.5  0.05}{cmyk}{}
+\newxyColor{green3}{0.4   0     0.6   0.1}{cmyk}{}
+%
+\newxyColor{bluegreen1}{0.4   0     0.2   0   }{cmyk}{}
+\newxyColor{bluegreen2}{0.5   0     0.3   0.05}{cmyk}{}
+\newxyColor{bluegreen3}{0.6   0     0.4   0.10}{cmyk}{}
+%
+\newxyColor{lightblue1}{0.2  0  0     0   }{cmyk}{}
+\newxyColor{lightblue2}{0.3  0  0     0.05}{cmyk}{}
+\newxyColor{lightblue3}{0.4  0  0     0.10}{cmyk}{}
+%
+\newxyColor{blue1}{0.5  0.1  0     0  }{cmyk}{}
+\newxyColor{blue2}{0.6  0.2  0     0.1}{cmyk}{}
+\newxyColor{blue3}{0.7  0.3  0     0.2}{cmyk}{}
+%
+\newxyColor{metalblue1}{0.4  0.2  0     0  }{cmyk}{}
+\newxyColor{metalblue2}{0.5  0.3  0     0.1}{cmyk}{}
+\newxyColor{metalblue3}{0.6  0.4  0     0.2}{cmyk}{}
+%
+\newxyColor{grayblue1}{0.2   0.2   0     0   }{cmyk}{}
+\newxyColor{grayblue2}{0.3   0.3   0     0.1}{cmyk}{}
+\newxyColor{grayblue3}{0.4   0.4   0     0.2}{cmyk}{}
+%
+\newxyColor{indigo1}{0.5  0.5  0     0  }{cmyk}{}
+\newxyColor{indigo2}{0.6  0.6  0     0.1}{cmyk}{}
+\newxyColor{indigo3}{0.7  0.7  0     0.2}{cmyk}{}
+%
+\newxyColor{violet1}{0.2  0.4  0     0  }{cmyk}{}
+\newxyColor{violet2}{0.3  0.5  0     0.1}{cmyk}{}
+\newxyColor{violet3}{0.4  0.6  0     0.2}{cmyk}{}
+%
+\newxyColor{gray1}{0 0 0 0.1}{cmyk}{}
+\newxyColor{gray2}{0 0 0 0.2}{cmyk}{}
+\newxyColor{gray3}{0 0 0 0.3}{cmyk}{}
+\newxyColor{gray4}{0 0 0 0.4}{cmyk}{}
+\newxyColor{gray5}{0 0 0 0.5}{cmyk}{}
+\newxyColor{gray6}{0 0 0 0.6}{cmyk}{}
+\newxyColor{gray7}{0 0 0 0.7}{cmyk}{}
+\newxyColor{gray8}{0 0 0 0.8}{cmyk}{}
+\newxyColor{gray9}{0 0 0 0.9}{cmyk}{}
+}
+
+
+% XY DASHED CONNECTIONS
+
+\def\Dash#1#2{%
+	\POS #1;#2 **{}, ?(0.35); ?(0.65), **\crv{}}
+
+
+\def\dashII#1#2{%
+	\ar@{-}{"#1";"#2" **{} ?<>(0.1)}; {"#1";"#2" **{} ?<>(0.4)},%
+	\ar@{-} {"#1";"#2" **{} ?<>(0.6)}; {"#1";"#2" **{} ?<>(0.9)},}
+\def\dashIII#1#2{%
+	\ar@{-}{"#1";"#2" **{} ?<>(0.1)}; {"#1";"#2" **{} ?<>(0.25)},%
+	\ar@{-} {"#1";"#2" **{} ?<>(0.425)}; {"#1";"#2" **{} ?<>(0.575)},%
+	\ar@{-} {"#1";"#2" **{} ?<>(0.75)};{"#1";"#2" **{} ?<>(0.9)},}
+\def\dashIV#1#2{%
+	\ar@{-} {"#1";"#2" **{} ?<>(0.05)}; {"#1";"#2" **{} ?<>(0.20)},%
+	\ar@{-} {"#1";"#2" **{} ?<>(0.30)}; {"#1";"#2" **{} ?<>(0.45)},%
+	\ar@{-} {"#1";"#2" **{} ?<>(0.55)}; {"#1";"#2" **{} ?<>(0.70)},%
+	\ar@{-} {"#1";"#2" **{} ?<>(0.80)}; {"#1";"#2" **{} ?<>(0.95)},}
+\def\dashV#1#2{%
+	\ar@{-} {"#1";"#2" **{} ?<>(0.04)}; {"#1";"#2" **{} ?<>(0.16)},%
+	\ar@{-} {"#1";"#2" **{} ?<>(0.24)}; {"#1";"#2" **{} ?<>(0.36)},%
+	\ar@{-} {"#1";"#2" **{} ?<>(0.44)}; {"#1";"#2" **{} ?<>(0.56)},%
+	\ar@{-} {"#1";"#2" **{} ?<>(0.64)}; {"#1";"#2" **{} ?<>(0.76)},%
+	\ar@{-} {"#1";"#2" **{} ?<>(0.84)}; {"#1";"#2" **{} ?<>(0.96)},}
+
+
+\def\dash #1{\ifx#12\expandafter\dashII\else\expandafter\dashA\expandafter#1\fi}
+\def\dashA#1{\ifx#13\expandafter\dashIII\else\expandafter\dashB\expandafter#1\fi}
+\def\dashB#1{\ifx#14\expandafter\dashIV\else\expandafter\dashC\expandafter#1\fi}
+\def\dashC#1{\ifx#15\expandafter\dashV\else\expandafter\dashD\expandafter#1\fi}
+\def\dashD{I got nothing}
+
+
+
