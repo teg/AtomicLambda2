@@ -34,7 +34,7 @@ where
 	\item[(iii)] in $u\share xt$ each $x_i$ must occur in $u$, and becomes bound.
 \end{itemize}
 %
-Terms of the basic calculus are called \emph{basic terms}.
+Terms of the basic calculus, called \emph{basic terms}, are those defined by the above such that every binder is closed.
 \end{definition}
 
 
@@ -61,8 +61,10 @@ where
 	\item[(vi)] in ($^*$) and ($^{**}$), for each $y_i$ there must be an occurrence $y_i.t$ in $u$ (respectively $t^n$), where the binder $y_i.$ must be open and becomes closed,
 	\item[(vii)] in ($^*$) and ($^{**}$), for each $x$ in each $\vv*x_i$, where $y_i.t$ occurs in $u$ (respectively $t^n$), the variable $x$ must occur free in $t$ and becomes bound, 
 	\item[(viii)] in ($^*$) and ($^{**}$), if $t_m$ is constructed over the tuple $\ttup[m]*z$, then variables in each $\vv*x_i$ and $\vv*z_i$ must correspond 1--1,
-	\item[(ix)] in $t^n\share xu$ each $x_i$ must occur in $t^n$, and becomes bound.
+	\item[(ix)] in $t^n\share xu$ each $x_i$ must occur in $t^n$, and becomes bound,
 \end{itemize}
+%
+In an atomic term, every binder $x.$ must be closed.
 %
 \end{definition}
 
@@ -71,17 +73,26 @@ Substitution (of $u$ for $x$ in $t$) is denoted $t\sub xu$.
 %
 Sharings and diistributors will be called \emph{closures}, and abbreviated $\g$; a series of closures will be denoted $\G$.
 %
-To identify subterms the special \emph{hole}-constructor will be used, denoted $\cxt[\vv x]$, which carries a sequence of free variables $\vv x$ so that closures can be applied to it, as for example in $\cxt[\vv x]\share xt$; where convenient, the variables of a hole will be omitted.
+To identify subterms the special \emph{hole}-constructor $\cxt[\vv x]$ will be used, which carries a sequence of free variables $\vv x$ so that closures can be applied to it, as for example in $\cxt[\vv x]\share xt$; where convenient, the variables of a hole will be omitted.
 %
-A term containing a single hole will called a \emph{context} and denoted $t\cxt[\vv x]$; the term $t\cxt*u$ is obtained by replacing the hole in $t\cxt$ with the term $u$, but only if $\FV(u)=\{\vv x\}$.
+A \emph{context} $t\cxt[\vv x]$ is a term containing a single hole; the term $t\cxt*u$ is obtained by replacing the hole in $t\cxt$ with the term $u$, but only if $\FV(u)=\{\vv x\}$
+
+%A term containing a single hole will called a \emph{context} and denoted $t\cxt[\vv x]$; the term $t\cxt*u$ is obtained by replacing the hole in $t\cxt$ with the term $u$, but only if $\FV(u)=\{\vv x\}$.
 
 
 The diistributor constructor creates a term of the following form.
 \[
 	u\diistr*{y_1.\tup*{\vv*x_1},\ldots,y_n.\tup*{\vv*x_n}}y{\ttup*z\G}
 \]
-Here, the variables $x_i$ and $z_i$ are in 1--1 correspondence; essentially, one set 
-
+Here, the variables $x_i$ and $z_i$ are in 1--1 correspondence; essentially, one set is redundant.
+%
+To reduce clutter, the following abbreviation omits the variables $x_i$,
+\[
+	u'\diistr yy{\ttup*z\G}
+\]
+where $u'$ is obtained from $u$ by replacing each $x$ in each $\vv*x_i$ with the corresponding $z$ in $\vv*z_i$.
+%
+In the abbreviated notation the uniqueness of variables is not respected, but only where the variables in a tuple $\ttup*z$ are concerned.
 
 
 \[
