@@ -1,0 +1,178 @@
+
+
+\documentclass{amsart}
+
+\usepackage{AL2macros}
+
+\setTheoremStyles
+
+\pagestyle{empty}
+\thispagestyle{empty}
+
+
+\begin{document}
+
+\section*{Terms}
+
+\begin{definition}
+\label{def:basic calculus}
+The \emph{basic calculus} $\Lambda_A^-$ is given by the grammar
+%
+\setMidspace{6pt}
+%
+\[
+t,u,v \Coloneq x
+	\Mid		\lambda x.t 
+	\Mid		(t)u
+	\Mid		u\share xt
+\]
+%
+where
+\begin{itemize}
+	\item[(i)] each variable may occur at most once, 
+	\item[(ii)] in $\lambda x.t$, if the variable $x$ occurs in $t$, it becomes bound and the binder $\lambda x$ becomes \emph{closed},
+	\item[(iii)] in $u\share xt$ each $x_i$ must occur in $u$, and becomes bound.
+\end{itemize}
+%
+Terms of the basic calculus are called \emph{basic terms}.
+\end{definition}
+
+
+\begin{definition}
+\label{def:atomic calculus}
+The \emph{atomic lambda calculus ii} $\Lambda_A^{\mathrm{ii}}$ extends the basic calculus with the \emph{diistributor} constructor.
+%
+The following mutually recursive grammars define the \emph{atomic lambda terms} and the \emph{terms of multiplicity $n$}, written $t^n$, for every $n>0$. 
+%
+\setMidspace{10pt}
+%
+\[
+\begin{array}{@{}r@{}c@{}l@{~}l@{}}
+			t,u,v \Coloneq & \ldots  & \Mid u\diistr*{y_1.\tup*{\vv*x_1},\ldots,y_m.\tup*{\vv*x_m}}y{t^m}	 & ^*
+\\[5pt]		t^n   \Coloneq & \ttup*z & \Mid t^n\share xu
+\\[5pt]							   && \Mid t^n\diistr*{y_1.\tup*{\vv*x_1},\ldots,y_m.\tup*{\vv*x_m}}y{t^m}	 & ^{**}
+\end{array}
+\]
+%
+where 
+\begin{itemize}
+	\item[(iv)] each variable may occur at most once, where in ($^*$) the $y_i$ are included in this restriction,
+	\item[(v)]  in ($^*$) and ($^{**}$), if $y$ occurs free in $t^m$ it becomes bound, and the binder $y.$ becomes closed,
+	\item[(vi)] in ($^*$) and ($^{**}$), for each $y_i$ there must be an occurrence $y_i.t$ in $u$ (respectively $t^n$), where the binder $y_i.$ must be open and becomes closed,
+	\item[(vii)] in ($^*$) and ($^{**}$), for each $x$ in each $\vv*x_i$, where $y_i.t$ occurs in $u$ (respectively $t^n$), the variable $x$ must occur free in $t$ and becomes bound, 
+	\item[(viii)] in ($^*$) and ($^{**}$), if $t_m$ is constructed over the tuple $\ttup[m]*z$, then variables in each $\vv*x_i$ and $\vv*z_i$ must correspond 1--1,
+	\item[(ix)] in $t^n\share xu$ each $x_i$ must occur in $t^n$, and becomes bound.
+\end{itemize}
+%
+\end{definition}
+
+
+Substitution (of $u$ for $x$ in $t$) is denoted $t\sub xu$.
+%
+Sharings and diistributors will be called \emph{closures}, and abbreviated $\g$; a series of closures will be denoted $\G$.
+%
+To identify subterms the special \emph{hole}-constructor will be used, denoted $\cxt[\vv x]$, which carries a sequence of free variables $\vv x$ so that closures can be applied to it, as for example in $\cxt[\vv x]\share xt$; where convenient, the variables of a hole will be omitted.
+%
+A term containing a single hole will called a \emph{context} and denoted $t\cxt[\vv x]$; the term $t\cxt*u$ is obtained by replacing the hole in $t\cxt$ with the term $u$, but only if $\FV(u)=\{\vv x\}$.
+
+
+The diistributor constructor creates a term of the following form.
+\[
+	u\diistr*{y_1.\tup*{\vv*x_1},\ldots,y_n.\tup*{\vv*x_n}}y{\ttup*z\G}
+\]
+Here, the variables $x_i$ and $z_i$ are in 1--1 correspondence; essentially, one set 
+
+
+
+\[
+	\rule{200pt}{.5pt}
+\]
+
+
+\section*{Rewriting}
+
+\noindent
+Diistributor introduction
+\[
+\displayrewrite
+  { u\share x{\lambda y.t} }
+  { u\subsabs xyx\diistr yy{\ttup x\share xt} }
+\]
+
+\bigskip
+\bigskip
+\bigskip
+
+\noindent
+Diistributor elimination
+\[
+\displayrewrite
+  { u\diistr yy{\ttup*x\share{\vv*x}y} }
+  { u\sub{\lambda y_1.t_1}{\lambda y_1.t_1\share*{\vv*x_1}{y_1}} \dotso
+     \sub{\lambda y_n.t_n}{\lambda y_n.t_n\share*{\vv*x_n}{y_n}} }
+\]
+
+\bigskip
+\bigskip
+\bigskip
+
+\noindent
+Collapsing diistributors ($\G$ may not contain any $\lambda y_i$)
+\[
+\displayrewrite
+  { u\diistr x{y_1}{\ttup*z\G}\diistr[m]yy{\ttup*[m]w\G*} }
+  { u\diistr*{\vv x,y_2,\dotsc,y_m}y{\tup*{\vv*z_1|\dotso|\vv*z_n|\vv*w_2|\dotso|\vv*w_m}\G\G*} }
+\]
+
+
+\bigskip
+\bigskip
+\bigskip
+
+\noindent
+Permutation ($x\in\FV(\ttup*y\G)$)
+\[
+\displayrewrite
+  { u\diistr xx{\ttup*y\G\share zt} }
+  { u\diistr xx{\ttup{\vv*y'}\G}\share zt }
+\]
+where $\vv*y'_i=\vv*y_i-\vv*z$
+
+\bigskip
+\bigskip
+\bigskip
+
+%\noindent
+%Permutation ($y\notin\FV(t^n),~\FV\g\subseteq\vv*x_i$)
+%\[
+%\displayrewrite
+%  { v\cxt*{~u\diistr y{z_i}{t^n\g}~}\diistr zz{\ttup*x\G} }
+%  { v\cxt*{~u\diistr y{z_i}{t^n}~}\diistr zz{\ttup{\vv*x'}\g\G} }
+%\]
+%(updating $\ttup*x$ to $\ttup{\vv*x'}$ by replacing the free variables of $\g$, in $\vv*x_i$, by its cofree variables)
+
+\noindent
+Permutation ($\FV\g\subseteq\FV(u\cxt*{x_1.t\g})$)
+\[
+\displayrewrite
+  { u\cxt*{~x_1.t\g~}\diistr xy{\ttup*z\G} }
+  { u\cxt*{~x_1.t~}\diistr xy{\tup*{\vv*z'_1|\vv*z_2|\dotso|\vv*z_n}\g\G} }
+\]
+where $\vv*z'_1$ is updated to $\vv*z_1$ by removing the free variables of $\g$ and adding its co-free variables
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

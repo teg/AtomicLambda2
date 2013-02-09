@@ -1,0 +1,365 @@
+
+\ProvidesPackage{AL2macros}
+
+% Cheat with fat margins
+%\usepackage{a4wide}
+
+% To get cases in equations
+\usepackage{amsmath}
+
+% For two-headed arrows
+\usepackage{amssymb}
+
+% To use definitions, lemmas and theorems.
+\usepackage{amsthm}
+
+% Nicer array and tabular layout (IEEE-suggested)
+\usepackage{array}
+
+% Cleans up citations (IEEE-suggested)
+%\usepackage{cite}
+
+% Equal-width parboxes (IEEE-suggested)
+%\usepackage{eqparbox}
+
+% To have enough free dimens
+%\usepackage{etex}
+
+% Fix issues with figures in 2-column mode, among others (IEEE-suggested)
+%\usepackage{fixltx2e}
+
+% A more pleasant font
+\usepackage[T1]{fontenc} % use postscript type 1 fonts
+\usepackage{textcomp} % use symbols in TS1 encoding
+%\usepackage[garamond]{mathdesign} % use a nice font
+
+% Allow inclusion of graphics
+\usepackage[pdftex]{graphicx}
+
+% To get url's
+%\usepackage[hidelinks]{hyperref}
+%\usepackage{url}				% (IEEE-suggested)
+
+
+% For nicer math and tables (IEEE-suggested)
+%\usepackage{mdwmath}
+%\usepackage{mdwtab}
+
+% Improves the text layout
+\usepackage{microtype}
+
+% Landscape-orientated floats
+%\usepackage{rotating}
+
+% To get bottom floats in 2-column mode (IEEE-suggested)
+%\usepackage{stfloats}
+% (use \fnbelowfloat to put footnotes below such a float)
+
+% To get semantic brackets
+\usepackage{stmaryrd}
+
+% To get decend subfigures - choose one (IEEE-suggested)
+%\usepackage[tight,footnotesize]{subfigure}
+%\usepackage[caption=false,font=footnotesize]{subfig}
+
+% For lambda's with bars - choose one
+%\usepackage{phonetic}	\newcommand\lambar{\mbox\barlambda}
+%\usepackage{txfonts}	\newcommand\lambar{\lambdabar}
+%\usepackage{txfonts}	\newcommand\lambar{\lambdaslash}
+\usepackage{tipa}		\newcommand\lambar{\mbox\textcrlambda}
+%\usepackage{wsuipa}		\newcommand\lambar{\mbox\crossnilambda}
+
+% Don't remember what this does
+\usepackage[normalem]{ulem}
+
+% Nice fractions
+\usepackage{units}
+
+% To typeset derivations
+%\usepackage[lutzsyntax,pdftex]{virginialake}
+
+% For commands with multiple optional arguments
+\usepackage{xargs}
+
+% Mandatory
+\usepackage{willemtools}
+
+
+
+
+% setting theorem etc. environments
+% put the following in the preamble
+%
+%  \setTheoremStyles
+
+
+\newcommand\setTheoremStyles{
+	\theoremstyle{definition}
+	\newtheorem{definition}{Definition}
+	\theoremstyle{plain}
+	\newtheorem{lemma}      [definition]{Lemma}
+	\newtheorem{theorem}    [definition]{Theorem}
+	\newtheorem{proposition}[definition]{Proposition}
+	\theoremstyle{remark}
+	\newtheorem{remark}     [definition]{Remark}
+}
+
+
+
+% A theorem-style environment with arbitrary label
+\newenvironment{theorem_other}[1]{%
+	\let\innerthmenv\undefined%
+	\let\endinnerthmenv\undefined%
+	\theoremstyle{plain}%
+	\newtheorem*{innerthmenv}{#1}%
+	\begin{innerthmenv}%
+}{
+	\end{innerthmenv}%
+}
+
+
+% small triangles (taken from mathabx.sty)
+
+\DeclareFontFamily{U}{mathb}{\hyphenchar\font45}
+\DeclareFontShape{U}{mathb}{m}{n}{
+      <5> <6> <7> <8> <9> <10> gen * mathb
+      <10.95> mathb10 <12> <14.4> <17.28> <20.74> <24.88> mathb12
+      }{}
+\DeclareSymbolFont{mathb}{U}{mathb}{m}{n}
+\DeclareFontSubstitution{U}{mathb}{m}{n}
+
+%
+\DeclareMathSymbol{\smalltriangleup}   {2}{mathb}{"98}
+\DeclareMathSymbol{\smalltriangledown} {2}{mathb}{"99}
+\DeclareMathSymbol{\smalltriangleleft} {2}{mathb}{"9A}
+\DeclareMathSymbol{\smalltriangleright}{2}{mathb}{"9B}
+\DeclareMathSymbol{\blacktriangleup}   {2}{mathb}{"9C}
+\DeclareMathSymbol{\blacktriangledown} {2}{mathb}{"9D}
+\DeclareMathSymbol{\blacktriangleleft} {2}{mathb}{"9E}
+\DeclareMathSymbol{\blacktriangleright}{2}{mathb}{"9F}
+
+\newcommand\verttriangleright{\mathop{\makebox[0pt][l]{$\vert$}{\blacktriangleright}}}
+\newcommand\verttriangleleft {\mathop{{\blacktriangleleft}\makebox[0pt][r]{$\vert$}}}
+
+
+% derivation arrows
+
+\newcommand\Longderivation[1][15]{
+	\begin{tikzpicture}[x=1pt,y=1pt,baseline=(base)]
+		\path (0,0) -- coordinate[yshift=-.5ex] (base) (0,#1);
+		\path[draw,line cap=round,line join=round]
+			(-1,#1) -- (-1,0) 
+			( 1,#1) -- ( 1,0) ; 
+	\end{tikzpicture}
+}
+
+\newcommand\Longdownarrow[1][15]{
+	\begin{tikzpicture}[x=1pt,y=1pt,baseline=(base)]
+		\path (0,0) -- coordinate[yshift=-.5ex] (base) (0,#1);
+		\path[draw,line cap=round,line join=round]
+			(-1,#1) -- (-1,1.9) 
+			( 1,#1) -- ( 1,1.9)
+			(-2.5,3) .. 
+				controls (-1.5,2.5) and (-.5,1.5) 
+			         .. (0,0) .. 
+			    controls (.5,1.5) and (1.5,2.5) 
+			         .. (2.5,3) ; 
+	\end{tikzpicture}
+}
+
+\newcommand\Longuparrow[1][15]{
+	\begin{tikzpicture}[x=1pt,y=1pt,baseline=(base)]
+		\path (0,0) -- coordinate[yshift=-.5ex] (base) (0,-#1);
+		\path[draw,line cap=round,line join=round]
+			(-1,-#1) -- (-1,-1.9)
+			( 1,-#1) -- ( 1,-1.9) 
+			(-2.5,-3) .. 
+				controls (-1.5,-2.5) and (-.5,-1.5) 
+			          ..  (0,0) .. 
+			    controls (.5,-1.5) and (1.5,-2.5) 
+			          .. (2.5,-3) ;
+	\end{tikzpicture}
+}
+
+
+
+
+% generic macros
+
+\renewcommand\iff{\Leftrightarrow}
+\newcommand\coloneq{\mathrel{{:}{=}}}
+\newcommand\occurscount[2]{|#2|_{#1}}
+\newcommand\where{\textnormal{where}}
+\newcommand\textif{\text{if}}
+
+
+	% zero-width \subscript*
+
+\makeatletter
+\newcommand\subscript{\@ifstar\zerowidthsubscript_}
+\newcommand\zerowidthsubscript[1]{_{\makebox[0pt][l]{$\scriptstyle{#1}$}}}
+\makeatother
+
+	% grammar commands with variable width
+	%	\setMidspace [dimen] {dimen}
+
+\newcommand\Mid{\mid}
+\newcommand\Coloneq{\coloneq}
+
+\newcommand\setMidspace[2][-]{%
+	\renewcommand\Mid{\kern#2\mid\kern#2}%
+	\ifx#1-\renewcommand\Coloneq{\kern#2\coloneq\kern#2}\else\renewcommand\Coloneq{\kern#1\coloneq\kern#1}\fi%
+}
+
+	% vertical centering with adjustable space above/below
+	%	\vc [dimen] [dimen] {box}
+
+\newcommandx\vc[3][1=0pt,2=-]{
+ \begin{array}{l}
+ \\[#1]\\[-24pt]
+  #3 
+ \\[-12pt] \\[\ifx#2-#1\else#2\fi] 
+ \end{array}
+}
+
+
+% special sets
+
+\newcommand{\FV}{{\mathop{\mathsf{FV}}}}
+\newcommand\ALcalc{\Lambda_A}
+
+
+% atomic terms (and contexts)
+
+\makeatletter
+\newcommand\vv{\@ifstar\vec\vvnostar}
+\newcommand\tup{\@ifstar\tupstar\tupnostar}
+\newcommand\ttup{\@ifstar\ttupstar\ttupnostar}
+\newcommand\share{\@ifstar\sharestar\sharenostar}
+\newcommand\distr{\@ifstar\distrstar\distrnostar}
+\newcommand\diistr{\@ifstar\diistrstar\diistrnostar}
+\newcommand\coshare{\@ifstar\cosharestar\cosharenostar}
+\newcommand\g{\@ifstar\gstar\gnostar}
+\newcommand\G{\@ifstar\Gstar\Gnostar}
+\newcommand\cxt{\@ifstar\cxtstar\cxtnostar}
+\makeatother
+
+\newcommand\vvnostar[2][n]{#2_1,\ldots,#2_{#1}}
+\newcommand\tupstar[1]{\langle #1\rangle}
+\newcommand\tupnostar[2][n]{\langle\vvnostar[#1]{#2}\rangle}
+\newcommand\sharestar[2]{[#1\leftarrow#2]}
+\newcommand\sharenostar[3][n]{[\vv[#1]{#2}\leftarrow #3]}
+\newcommand\distrstar[3]{[#1\twoheadleftarrow\lambda #2.#3]}
+\newcommand\distrnostar[4][n]{[\vv[#1]{#2}\twoheadleftarrow\lambda #3.#4]}
+\newcommand\diistrstar[3]{[#1\blacktriangleright #2.#3]}
+\newcommand\diistrnostar[4][n]{[\vv[#1]{#2}\blacktriangleright #3.#4]}
+\newcommand\gstar[1][{}]{[\delta_{#1}]}
+\newcommand\Gstar[1][{}]{[\Delta_{#1}]}
+\newcommand\gnostar[1][{}]{[\gamma_{#1}]}
+\newcommand\Gnostar[1][{}]{[\Gamma_{#1}]}
+\newcommand\cxtstar[1]{\{#1\}}
+\newcommand\cxtnostar[1][{}]{\{\cdot\}_{#1}}
+\newcommand\ttupstar[2][n]{\tup*{\vv*{#2}_1|\dotso|\vv*{#2}_{#1}}}
+\newcommand\ttupnostar[2][n]{\tup*{#2_1|\dotso|#2_{#1}}}
+
+\newcommand\conjs[2][n]{#2_1\wedge\dotso\wedge #2_{#1}}
+
+\newcommand\skel{{\mathsf{skel}}}
+
+% substitutions
+
+\newcommand\sub[2]{\{#2/#1\}}
+\newcommand\subs[3][n]{\sub{#2_1}{#3}\dotso\sub{#2_{#1}}{#3}}
+\newcommand\subsapp[4][n]{\sub{#2_1}{(#3_1)#4_1}\dotso\sub{#2_{#1}}{(#3_{#1})#4_{#1}}}
+\newcommand\subsabs[4][n]{\sub{#2_1}{\lambda#3_1.#4_1}\dotso\sub{#2_{#1}}{\lambda#3_{#1}.#4_{#1}}}
+
+
+% w-calculus terms
+
+\newcommand\Rub{\share*{}}
+\newcommand\Rnil{\bullet}
+
+
+% rewriting arrows  ~>>  and  ~>>|
+
+\newcommand\squigarrowtrans{\mathbin{
+ \makebox[0pt][l]{\hspace{1.1pt}$\rightsquigarrow$}
+ \makebox[0pt][l]{\color{white}\rule{8pt}{5pt}}
+ {\rightsquigarrow\hspace{1.1pt}}
+}}
+\newcommand\squigarrowtransend{\mathbin{
+ \makebox[0pt][l]{\hspace{1.1pt}$\rightsquigarrow\mapsfromchar$}
+ \makebox[0pt][l]{\color{white}\rule{8pt}{5pt}}
+ {\rightsquigarrow\hspace{1.1pt}}
+}}
+
+
+% rewrite relations
+
+
+\newcommand\rewrite[1][{}]{
+ \SWITCH{#1}
+ {}  {\rightsquigarrow}
+ {+} {\rightsquigarrow^+}
+ {*} {\rightsquigarrow^\star}
+ \DEFAULT{\rightsquigarrow^{#1}}
+}
+
+\newcommand\ALbeta   [1][{}]{\rewrite[#1]_\beta}
+\newcommand\ALnotbeta[1][{}]{\rewrite[#1]_S}
+\newcommand\Rbeta    [1][{}]{\rewrite[#1]_\beta}
+\newcommand\Rnotbeta [1][{}]{\rewrite[#1]_w}
+
+\newcommand\ALnotbetadown{\indirection{d}{\rightsquigarrow}_S}
+
+
+% translation functions
+
+\newcommand\ALden[1]{\llbracket{#1}\rrbracket}
+\newcommand\ALcoden[2][{}]{\llparenthesis{#2}\rrparenthesis_{#1}}
+\newcommand\Rden[1]{\llbracket{#1}\rrbracket_w}
+\newcommand\Rfloor[1]{\lfloor #1 \rfloor}
+
+
+% names of typing rules
+
+\newcommand{\typeabs}{{\lambda}}
+\newcommand{\typeapp}{{@}}
+\newcommand{\typevar}{{\mathsf{ax}}}
+\newcommand{\typeshare}{{\leftarrow}}
+\newcommand{\typedist}{{\twoheadleftarrow}}
+\newcommand{\typetuple}{{\langle\kern2pt\rangle}}
+
+
+% displayed rewrite rules
+
+\newcommand\downsquigarrow{\indirection d\rightsquigarrow}
+
+
+	% \displayrewrite * [relation] {left} {right}
+	
+\makeatletter
+\newcommand\displayrewrite{\@ifstar\displayrewritestar\displayrewritenostar}
+\makeatother
+
+\newcommand\displayrewritestar[3][{}]{
+	#2 \hspace{10pt minus 8pt}\rightsquigarrow_{#1}
+	   \hspace{10pt minus 8pt} #3 }
+%\newcommand\displayrewritenostar[3][{}]{
+%  \begin{array}{c}
+%    #2 \\ \vc[5pt]{\downsquigarrow_{#1}} \\ #3
+%  \end{array}
+%}
+\newcommand\displayrewritenostar[3][{}]{
+  \vc[12pt]{
+   \begin{array}{c}
+    #2 \\ \\[-6pt] \downsquigarrow_{#1} \\ \\[-6pt] #3
+   \end{array}
+  }
+}
+
+
+
+
+
+
