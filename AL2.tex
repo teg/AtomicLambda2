@@ -30,12 +30,15 @@ t,u,v \Coloneq x
 where
 \begin{itemize}
 	\item[(i)] each variable may occur at most once, 
-	\item[(ii)] in $\lambda x.t$, if the variable $x$ occurs in $t$, it becomes bound and the binder $\lambda x$ becomes \emph{closed},
+	\item[(ii)] in $\lambda x.t$, if the variable $x$ occurs in $t$, it becomes \emph{bound} and the binder $\lambda x$ becomes \emph{closed},
 	\item[(iii)] in $u\share xt$ each $x_i$ must occur in $u$, and becomes bound.
 \end{itemize}
 %
 Terms of the basic calculus, called \emph{basic terms}, are those defined by the above such that every binder is closed.
 \end{definition}
+
+
+A sequence of variables $\vv x$ will be abbreviated $\vv*x$, so that the sharing constructor above can be written $u\share*{\vv*x}t$.
 
 
 \begin{definition}
@@ -56,17 +59,20 @@ The following mutually recursive grammars define the \emph{atomic lambda terms} 
 %
 where 
 \begin{itemize}
-	\item[(iv)] each variable may occur at most once, where in ($^*$) the $y_i$ are included in this restriction,
+	\item[(iv)] in ($^*$) and ($^{**}$), the $y_i$ must be distinct, and distinct from any occurring variable,
 	\item[(v)]  in ($^*$) and ($^{**}$), if $y$ occurs free in $t^m$ it becomes bound, and the binder $y.$ becomes closed,
 	\item[(vi)] in ($^*$) and ($^{**}$), for each $y_i$ there must be an occurrence $y_i.t$ in $u$ (respectively $t^n$), where the binder $y_i.$ must be open and becomes closed,
 	\item[(vii)] in ($^*$) and ($^{**}$), for each $x$ in each $\vv*x_i$, where $y_i.t$ occurs in $u$ (respectively $t^n$), the variable $x$ must occur free in $t$ and becomes bound, 
-	\item[(viii)] in ($^*$) and ($^{**}$), if $t_m$ is constructed over the tuple $\ttup[m]*z$, then variables in each $\vv*x_i$ and $\vv*z_i$ must correspond 1--1,
-	\item[(ix)] in $t^n\share xu$ each $x_i$ must occur in $t^n$, and becomes bound,
+	\item[(viii)] in ($^*$) and ($^{**}$), if $t_m$ is constructed over the tuple $\ttup*[m]z$, then in each $\vv*x_i$ and $\vv*z_i$ variables must correspond 1--1,
+	\item[(ix)] in $t^n\share xu$ each $x_i$ must occur in $t^n$, and becomes bound.
 \end{itemize}
 %
 In an atomic term, every binder $x.$ must be closed.
 %
 \end{definition}
+
+% TO DO:  the binder  y.  of a distributor must not occur in the tuple  <..|..>
+%		  possibly a more stringent restriction is needed
 
 
 Substitution (of $u$ for $x$ in $t$) is denoted $t\sub xu$.
@@ -121,6 +127,16 @@ Diistributor elimination
   { u\diistr yy{\ttup*x\share{\vv*x}y} }
   { u\sub{\lambda y_1.t_1}{\lambda y_1.t_1\share*{\vv*x_1}{y_1}} \dotso
      \sub{\lambda y_n.t_n}{\lambda y_n.t_n\share*{\vv*x_n}{y_n}} }
+\]
+
+\bigskip
+
+\[
+\displayrewrite
+  { u\diistr*{y_1,\dotsc,y_i,\dotsc,y_n}y{\tup*{\dotso|y|\dotso}} }
+  { u\sub{\lambda y_1.t_1}{\lambda y_1.t_1\share*{}{y_1}} \dotso
+     \sub{\lambda y_i.t_i}{\lambda y_i.t_i\share*{y}{y_i}} \dotso
+     \sub{\lambda y_n.t_n}{\lambda y_n.t_n\share*{}{y_n}} }
 \]
 
 \bigskip
