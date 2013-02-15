@@ -16,4 +16,6 @@
 *.kilepr
 *.ilg
 *.ind
+*.zip
+.DS_Store
 wrong/*
