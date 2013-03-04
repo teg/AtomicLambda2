@@ -109,7 +109,7 @@ In the abbreviated notation the uniqueness of variables is not respected, but on
 \section*{Rewriting}
 
 \noindent
-Permutation
+Permutations
 \[
 \displayrewrite
 { (u\g)t }
@@ -117,74 +117,52 @@ Permutation
 \]
 
 \bigskip
-\bigskip
-\bigskip
 
-\noindent
-Permutation
 \[
 \displayrewrite
 { (u)t\g }
 { ((u)t)\g }
 \]
 
-\bigskip
-\bigskip
-\bigskip
-
-\noindent
-Permutation
 \[
 \displayrewrite
 { u\share x{t\g} }
 { u\share xt\g }
 \]
 
-\bigskip
-\bigskip
-\bigskip
-
-\noindent
-Permutation ($x\in\FV(t)$)
 \[
 \displayrewrite
 { \lambda x. t\g }
 { (\lambda x. t) \g }
 \]
 
-\bigskip
-\bigskip
-\bigskip
-
 \noindent
-Permutation ($x\in\FV(\ttup*y\G)$)
+If $x\in\FV(\ttup*y\G)$:
 \[
 \displayrewrite
   { u\diistr xx{\ttup*y\G\share zt} }
-  { u\diistr xx{\ttup{\vv*y'}\G}\share zt }
+  { u\diistr xx{\ttup{\vv*y'}\G}\share zt }\;,
 \]
-where $\vv*y'_i=\vv*y_i-\vv*z$
+where $\vv*y'_i=\vv*y_i-\vv*z$.
 
-\bigskip
-\bigskip
 \bigskip
 
 \noindent
-Permutation ($\FV\g\subseteq\FV(u\cxt*{x_1.t\g})$ and $\g$ may not contain any
-$x_i$)
+If $\FV\g\subseteq\FV(u\cxt*{x_1.t\g})$ and $\g$ does not contain any $x_i$:
 \[
 \displayrewrite
   { u\cxt*{~x_1.t\g~}\diistr xy{\ttup*z\G} }
-  { u\cxt*{~x_1.t~}\diistr xy{\tup*{\vv*z'_1|\vv*z_2|\dotso|\vv*z_n}\g\G} }
+  { u\cxt*{~x_1.t~}\diistr xy{\tup*{\vv*z'_1|\vv*z_2|\dotso|\vv*z_n}\g\G} }\;,
 \]
-where $\vv*z'_1$ is updated to $\vv*z_1$ by removing the free variables of $\g$ and adding its co-free variables
+where $\vv*z'_1$ is updated to $\vv*z_1$ by removing the free variables of $\g$
+and adding its co-free variables.
 
 \bigskip
 \bigskip
 \bigskip
 
 \noindent
-Collapsing sharing
+Compounding closures
 \[
 \displayrewrite
 { u\share x{y_i}\share[m] yt }
@@ -192,11 +170,7 @@ Collapsing sharing
 \]
 
 \bigskip
-\bigskip
-\bigskip
 
-\noindent
-Collapsing diistributors
 \[
 \displayrewrite
   { u\diistr x{y_i}{\ttup*z}\diistr[m]yy{\ttup*[m]w\G} }
@@ -210,7 +184,7 @@ Collapsing diistributors
 \bigskip
 
 \noindent
-Duplicate application
+Duplicate application and abstraction
 \[
 \displayrewrite
 { u\share x{(v)t} }
@@ -218,11 +192,7 @@ Duplicate application
 \]
 
 \bigskip
-\bigskip
-\bigskip
 
-\noindent
-Diistributor introduction
 \[
 \displayrewrite
   { u\share x{\lambda y.t} }
