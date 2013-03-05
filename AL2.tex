@@ -62,8 +62,13 @@ where
 	\item[(iv)] in ($^*$) and ($^{**}$), the $y_i$ must be distinct, and distinct from any occurring variable,
 	\item[(v)]  in ($^*$) and ($^{**}$), if $y$ occurs free in $t^m$ it becomes bound, and the binder $y.$ becomes closed,
 	\item[(vi)] in ($^*$) and ($^{**}$), for each $y_i$ there must be an occurrence $y_i.t$ in $u$ (respectively $t^n$), where the binder $y_i.$ must be open and becomes closed,
-	\item[(vii)] in ($^*$) and ($^{**}$), for each $x$ in each $\vv*x_i$, where $y_i.t$ occurs in $u$ (respectively $t^n$), the variable $x$ must occur free in $t$ and becomes bound, 
-	\item[(viii)] in ($^*$) and ($^{**}$), if $t_m$ is constructed over the tuple $\ttup*[m]z$, then in each $\vv*x_i$ and $\vv*z_i$ variables must correspond 1--1,
+	\item[(vii)] in ($^*$) and ($^{**}$), for each $x$ in each $\vv*x_i$,
+                where $y_i.t$ occurs in $u$ (respectively $t^n$), if the
+                variable $x$ occurs in $u$ it must occur free in $t$ and becomes bound,
+	\item[(viii)] in ($^*$) and ($^{**}$), if $t_m$ is constructed over the
+                tuple $\ttup*[m]z$, then in each $\vv*x_i$ and $\vv*z_i$
+                variables must correspond 1--1 and if an $x$ does not bind a
+                variable, then the corresponding $z$ is not considered free,
 	\item[(ix)] in $t^n\share xu$ each $x_i$ must occur in $t^n$, and becomes bound.
 \end{itemize}
 %
@@ -147,22 +152,21 @@ If $x\not\in\FV(t\g)$:
 \]
 
 \noindent
-If $x\in\FV(\ttup*y\G)$:
+If $x\in\FV(t)$:
 \[
 \displayrewrite
-  { u\diistr xx{\ttup*y\G\share zt} }
-  { u\diistr xx{\ttup{\vv*y'}\G}\share zt }\;,
+  { u\diistr xx{t\g} }
+  { u\diistr xxt \g }\;.
 \]
-where $\vv*y'_i=\vv*y_i-\vv*z$.
 
 \bigskip
 
 \noindent
-If $x\not\in\FV(\ttup*y\G\share zt)$:
+If $x\not\in\FV(t\g)$:
 \[
 \displayrewrite
-  { u\diistr xx{\ttup*y\G\share zt} }
-  { u\diistr xx{\ttup{\vv*y'}\G} \diistr* xx{\tup*{\FV(t)}\share zt } }\;,
+  { u\diistr xx{t\g} }
+  { u\diistr xxt \diistr* xx{\tup*{\FV(t)}\g } }\;,
 \]
 
 \bigskip
@@ -217,16 +221,17 @@ Duplicate application and abstraction
 Diistributor elimination
 \[
 \displayrewrite
-  { u\diistr yy{\ttup*x\share{\vv*x}y} }
+{ u\diistr yy{\ttup*{x'}\share{\vv*x}y}}
   { u\sub{\lambda y_1.t_1}{\lambda y_1.t_1\share*{\vv*x_1}{y_1}} \dotso
-     \sub{\lambda y_n.t_n}{\lambda y_n.t_n\share*{\vv*x_n}{y_n}} }
+  \sub{\lambda y_n.t_n}{\lambda y_n.t_n\share*{\vv*x_n}{y_n}}\;, }
 \]
+where $\vv*{x_i}\subset \vv*{x'_i}$ for every $i$.
 
 \bigskip
 
 \[
 \displayrewrite
-  { u\diistr*{y_1,\dotsc,y_i,\dotsc,y_n}y{\tup*{\dotso|y|\dotso}} }
+{ u\diistr*{y_1,\dotsc,y_i,\dotsc,y_n}y{\tup*{\dotso|y|\dotso}}}
   { u\sub{\lambda y_1.t_1}{\lambda y_1.t_1\share*{}{y_1}} \dotso
      \sub{\lambda y_i.t_i}{\lambda y_i.t_i\share*{y}{y_i}} \dotso
      \sub{\lambda y_n.t_n}{\lambda y_n.t_n\share*{}{y_n}} }
