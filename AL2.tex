@@ -130,11 +130,20 @@ Permutations
 { u\share xt\g }
 \]
 
+\noindent
 If $x\in\FV(t)$:
 \[
 \displayrewrite
 { \lambda x. t\g }
 { (\lambda x. t) \g }\;.
+\]
+
+\noindent
+If $x\not\in\FV(t\g)$:
+\[
+\displayrewrite
+{ \lambda x. t\g }
+{ (\lambda x. t) \diistr* xx{\tup*{\FV(t)}\g} }\;.
 \]
 
 \noindent
@@ -149,14 +158,12 @@ where $\vv*y'_i=\vv*y_i-\vv*z$.
 \bigskip
 
 \noindent
-If $\FV\g\subseteq\FV(u\cxt*{x_1.t\g})$ and $\g$ does not contain any $x_i$:
+If $x\not\in\FV(\ttup*y\G\share zt)$:
 \[
 \displayrewrite
-  { u\cxt*{~x_1.t\g~}\diistr xy{\ttup*z\G} }
-  { u\cxt*{~x_1.t~}\diistr xy{\tup*{\vv*z'_1|\vv*z_2|\dotso|\vv*z_n}\g\G} }\;,
+  { u\diistr xx{\ttup*y\G\share zt} }
+  { u\diistr xx{\ttup{\vv*y'}\G} \diistr* xx{\tup*{\FV(t)}\share zt } }\;,
 \]
-where $\vv*z'_1$ is updated to $\vv*z_1$ by removing the free variables of $\g$
-and adding its co-free variables.
 
 \bigskip
 \bigskip
@@ -172,12 +179,14 @@ Compounding closures
 
 \bigskip
 
+\noindent
+If $\G$ does not contain any $y_i$:
 \[
 \displayrewrite
-  { u\diistr x{y_i}{\ttup*z}\diistr[m]yy{\ttup*[m]w\G} }
+  { u\diistr x{y_i}{\ttup*z\G}\diistr[m]yy{\ttup*[m]w\G*} }
   { u\diistr*{y_1,\dotsc,y_{i-1},\vv x, y_{i+1}, \dotsc, y_m} y {
   \tup*{\vv*w_1|\dotso|\vv*w_{i-1}|\vv*z_1|\dotso|\vv*z_n|\vv*w_{i+1}|\dotso|\vv*w_m}
-  \G} }
+  \G\G*} }\;.
 \]
 
 \bigskip
