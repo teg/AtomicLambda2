@@ -236,6 +236,7 @@
 \newcommand\tup{\@ifstar\tupstar\tupnostar}
 \newcommand\ttup{\@ifstar\ttupstar\ttupnostar}
 \newcommand\share{\@ifstar\sharestar\sharenostar}
+\newcommand\unshare{\@ifstar\unsharestar\unsharenostar}
 \newcommand\distr{\@ifstar\distrstar\distrnostar}
 \newcommand\diistr{\@ifstar\diistrstar\diistrnostar}
 \newcommand\coshare{\@ifstar\cosharestar\cosharenostar}
@@ -249,10 +250,12 @@
 \newcommand\tupnostar[2][n]{\langle\vvnostar[#1]{#2}\rangle}
 \newcommand\sharestar[2]{[#1\leftarrow#2]}
 \newcommand\sharenostar[3][n]{[\vv[#1]{#2}\leftarrow #3]}
+\newcommand\unsharestar[1]{[\blacktriangleleft {#1}]}
+\newcommand\unsharenostar[2][n]{\unsharestar{\vv[#1]{#2}}}
 \newcommand\distrstar[3]{[#1\twoheadleftarrow\lambda #2.#3]}
 \newcommand\distrnostar[4][n]{[\vv[#1]{#2}\twoheadleftarrow\lambda #3.#4]}
-\newcommand\diistrstar[3]{[#1\blacktriangleright #2.#3]}
-\newcommand\diistrnostar[4][n]{[\vv[#1]{#2}\blacktriangleright #3.#4]}
+\newcommand\diistrstar[3]{[#1\twoheadleftarrow {#3}]}
+\newcommand\diistrnostar[4][n]{[{{#3}_1}.\tup*{\vv*{{#2}_1}},\dotso,{{#3}_{#1}}.\tup*{\vv*{{#2}_{#1}}}\twoheadleftarrow{#4}]}
 \newcommand\gstar[1][{}]{[\delta_{#1}]}
 \newcommand\Gstar[1][{}]{[\Delta_{#1}]}
 \newcommand\gnostar[1][{}]{[\gamma_{#1}]}

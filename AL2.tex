@@ -51,7 +51,8 @@ The following mutually recursive grammars define the \emph{atomic lambda terms} 
 %
 \[
 \begin{array}{@{}r@{}c@{}l@{~}l@{}}
-			t,u,v \Coloneq & \ldots  & \Mid u\diistr*{y_1.\tup*{\vv*x_1},\ldots,y_m.\tup*{\vv*x_m}}y{t^m}	 & ^*
+        t,u,v \Coloneq & \ldots  & \Mid \unshare[m]y
+\\[5pt]                 && \Mid u\diistr[m] xy{t^m} & ^*
 \\[5pt]		t^n   \Coloneq & \ttup*z & \Mid t^n\share xu
 \\[5pt]							   && \Mid t^n\diistr*{y_1.\tup*{\vv*x_1},\ldots,y_m.\tup*{\vv*x_m}}y{t^m}	 & ^{**}
 \end{array}
