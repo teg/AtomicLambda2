@@ -21,96 +21,47 @@ The \emph{basic calculus} $\Lambda_A^-$ is given by the grammar
 \setMidspace{6pt}
 %
 \[
-t,u,v \Coloneq x
-	\Mid		\lambda x.t 
-	\Mid		(t)u
-	\Mid		u\share xt
+\begin{array}{@{}r@{}l@{~}l@{}}
+        t,u,v \Coloneq &
+x
+\Mid		(t)u
+\Mid            \lambda x.(t\share xx)
+\Mid\\[5pt] &   \lambda y^{\tup x}.(t\cxt*{x_1}\ldots\cxt*{x_n})
+\Mid\\[5pt] &   u\share xt
+\Mid            u\share x{\tup y}
+\end{array}
 \]
 %
 where
 \begin{itemize}
 	\item[(i)] each variable may occur at most once, 
-	\item[(ii)] in $\lambda x.t$, if the variable $x$ occurs in $t$, it becomes \emph{bound} and the binder $\lambda x$ becomes \emph{closed},
-	\item[(iii)] in $u\share xt$ each $x_i$ must occur in $u$, and becomes bound.
+	\item[(ii)] each variable may be bound at most once,
+	\item[(iii)] in $u\share xt$ each $x_i$ must occur in $u$, and becomes
+                bound,
+        \item[(iv)] in $u\share x{\tup y}$ each path starting from an $x_i$,
+                must end in a variable $z_j$ in the scope of an $\lambda
+                y_i^{\tup z}$; and every $y_k$ must occur as a binder in $u$.
 \end{itemize}
-%
-Terms of the basic calculus, called \emph{basic terms}, are those defined by the above such that every binder is closed.
 \end{definition}
 
 
 A sequence of variables $\vv x$ will be abbreviated $\vv*x$, so that the sharing constructor above can be written $u\share*{\vv*x}t$.
 
-
-\begin{definition}
-\label{def:atomic calculus}
-The \emph{atomic lambda calculus ii} $\Lambda_A^{\mathrm{ii}}$ extends the basic calculus with the \emph{diistributor} constructor.
+Sharings will be abbreviated $\g$; a series of sharings will be denoted $\G$.
 %
-The following mutually recursive grammars define the \emph{atomic lambda terms} and the \emph{terms of multiplicity $n$}, written $t^n$, for every $n>0$. 
-%
-\setMidspace{10pt}
-%
-\[
-\begin{array}{@{}r@{}c@{}l@{~}l@{}}
-        t,u,v \Coloneq & \ldots  & \Mid \unshare[m]y
-\\[5pt]                 && \Mid u\diistr[m] xy{t^m} & ^*
-\\[5pt]		t^n   \Coloneq & \ttup*z & \Mid t^n\share xu
-\\[5pt]							   && \Mid t^n\diistr*{y_1.\tup*{\vv*x_1},\ldots,y_m.\tup*{\vv*x_m}}y{t^m}	 & ^{**}
-\end{array}
-\]
-%
-where 
-\begin{itemize}
-	\item[(iv)] in ($^*$) and ($^{**}$), the $y_i$ must be distinct, and distinct from any occurring variable,
-	\item[(v)]  in ($^*$) and ($^{**}$), if $y$ occurs free in $t^m$ it becomes bound, and the binder $y.$ becomes closed,
-	\item[(vi)] in ($^*$) and ($^{**}$), for each $y_i$ there must be an occurrence $y_i.t$ in $u$ (respectively $t^n$), where the binder $y_i.$ must be open and becomes closed,
-	\item[(vii)] in ($^*$) and ($^{**}$), for each $x$ in each $\vv*x_i$,
-                where $y_i.t$ occurs in $u$ (respectively $t^n$), if the
-                variable $x$ occurs in $u$ it must occur free in $t$ and becomes bound,
-	\item[(viii)] in ($^*$) and ($^{**}$), if $t_m$ is constructed over the
-                tuple $\ttup*[m]z$, then in each $\vv*x_i$ and $\vv*z_i$
-                variables must correspond 1--1 and if an $x$ does not bind a
-                variable, then the corresponding $z$ is not considered free,
-	\item[(ix)] in $t^n\share xu$ each $x_i$ must occur in $t^n$, and becomes bound.
-\end{itemize}
-%
-In an atomic term, every binder $x.$ must be closed.
-%
-\end{definition}
-
-% TO DO:  the binder  y.  of a distributor must not occur in the tuple  <..|..>
-%		  possibly a more stringent restriction is needed
-
-
-Substitution (of $u$ for $x$ in $t$) is denoted $t\sub xu$.
-%
-Sharings and diistributors will be called \emph{closures}, and abbreviated $\g$; a series of closures will be denoted $\G$.
-%
-To identify subterms the special \emph{hole}-constructor $\cxt[\vv x]$ will be used, which carries a sequence of free variables $\vv x$ so that closures can be applied to it, as for example in $\cxt[\vv x]\share xt$; where convenient, the variables of a hole will be omitted.
+To identify subterms the special \emph{hole}-constructor $\cxt[\vv x]$ will be
+used, which carries a sequence of free variables $\vv x$ so that sharings can be
+applied to it, as for example in $\cxt[\vv x]\share xt$; where convenient, the
+variables of a hole will be omitted.
 %
 A \emph{context} $t\cxt[\vv x]$ is a term containing a single hole; the term $t\cxt*u$ is obtained by replacing the hole in $t\cxt$ with the term $u$, but only if $\FV(u)=\{\vv x\}$
 
-%A term containing a single hole will called a \emph{context} and denoted $t\cxt[\vv x]$; the term $t\cxt*u$ is obtained by replacing the hole in $t\cxt$ with the term $u$, but only if $\FV(u)=\{\vv x\}$.
-
-
-The diistributor constructor creates a term of the following form.
-\[
-	u\diistr*{y_1.\tup*{\vv*x_1},\ldots,y_n.\tup*{\vv*x_n}}y{\ttup*z\G}
-\]
-Here, the variables $x_i$ and $z_i$ are in 1--1 correspondence; essentially, one set is redundant.
-%
-To reduce clutter, the following abbreviation omits the variables $x_i$,
-\[
-	u'\diistr yy{\ttup*z\G}
-\]
-where $u'$ is obtained from $u$ by replacing each $x$ in each $\vv*x_i$ with the corresponding $z$ in $\vv*z_i$.
-%
-In the abbreviated notation the uniqueness of variables is not respected, but only where the variables in a tuple $\ttup*z$ are concerned.
-
+In the following we make crucial use of the fact that the hole construction is
+not commutative. In particular $u\cxt*{v\cxt*t}$ may be written as $u\cxt*v\cxt*t$.
 
 \[
 	\rule{200pt}{.5pt}
 \]
-
 
 \section*{Rewriting}
 
@@ -137,37 +88,27 @@ Permutations
 \]
 
 \noindent
-If $x\in\FV(t)$:
+If $\{\vv x\}\cap\FV(\g)=\emptyset$:
 \[
 \displayrewrite
-{ \lambda x. t\g }
-{ (\lambda x. t) \g }\;.
+{ \lambda x.(t\g\share xx)}
+{ (\lambda x. (t\share xx)) \g }\;.
 \]
 
 \noindent
-If $x\not\in\FV(t\g)$:
+If $\{\vv y\}\cap\FV(\g)=\emptyset$:
 \[
 \displayrewrite
-{ \lambda x. t\g }
-{ (\lambda x. t) \diistr* xx{\tup*{\FV(t)}\g} }\;.
+{ \lambda x^{\tup y}.(t\g) }
+{ (\lambda x^{\tup y}.t)\g }\;.
 \]
 
 \noindent
-If $x\in\FV(t)$:
+If $\FV(\share zv)\subset\{\vv y\}$:
 \[
 \displayrewrite
-  { u\diistr xx{t\g} }
-  { u\diistr xxt \g }\;.
-\]
-
-\bigskip
-
-\noindent
-If $x\not\in\FV(t\g)$:
-\[
-\displayrewrite
-  { u\diistr xx{t\g} }
-  { u\diistr xxt \diistr* xx{\tup*{\FV(t)}\g } }\;,
+{ \lambda x^{\tup y}.(t\share[m] zv) }
+{ (\lambda x^{\tup*{y_1,\dots,y_n,z_1,\dots,z_m} \setminus \FV(v)}.t)\share zv }\;.
 \]
 
 \bigskip
@@ -183,18 +124,6 @@ Compounding closures
 \]
 
 \bigskip
-
-\noindent
-If $\G$ does not contain any $y_i$:
-\[
-\displayrewrite
-  { u\diistr x{y_i}{\ttup*z\G}\diistr[m]yy{\ttup*[m]w\G*} }
-  { u\diistr*{y_1,\dotsc,y_{i-1},\vv x, y_{i+1}, \dotsc, y_m} y {
-  \tup*{\vv*w_1|\dotso|\vv*w_{i-1}|\vv*z_1|\dotso|\vv*z_n|\vv*w_{i+1}|\dotso|\vv*w_m}
-  \G\G*} }\;.
-\]
-
-\bigskip
 \bigskip
 \bigskip
 
@@ -202,16 +131,19 @@ If $\G$ does not contain any $y_i$:
 Duplicate application and abstraction
 \[
 \displayrewrite
-{ u\share x{(v)t} }
-{ u\subsapp xyz\share yv\share zt }
+{ u\cxt*{x_1}\ldots\cxt*{x_n}\share x{(v)t} }
+{ u'\cxt*{(y_1)z_1}\dots\cxt*{(y_n)z_n}\share yv\share zt }\;,
 \]
+where $u'$ is obtained from $u$ by replacing every $\lambda
+q_j^{\tup*{x_i,\vv*w}}$ with $\lambda q_j^{\tup*{y_i,z_i,\vv*w}}$.
 
 \bigskip
 
 \[
 \displayrewrite
-  { u\share x{\lambda y.t} }
-  { u\subsabs xyx\diistr yy{\ttup x\share xt} }
+{ u\cxt*{x_1}\ldots\cxt*{x_n}\share x{\lambda y.(t\share zy)} }
+{ u\cxt*{\lambda y_1^{\tup*{x_1}}.x_1}\ldots\cxt*{\lambda
+  y_n^{\tup*{x_n}}.x_n}\share xt\share z{\tup y} }
 \]
 
 \bigskip
@@ -219,23 +151,13 @@ Duplicate application and abstraction
 \bigskip
 
 \noindent
-Diistributor elimination
+Distributor elimination
 \[
 \displayrewrite
-{ u\diistr yy{\ttup*{x'}\share{\vv*x}y}}
-  { u\sub{\lambda y_1.t_1}{\lambda y_1.t_1\share*{\vv*x_1}{y_1}} \dotso
-  \sub{\lambda y_n.t_n}{\lambda y_n.t_n\share*{\vv*x_n}{y_n}}\;, }
-\]
-where $\vv*{x_i}\subset \vv*{x'_i}$ for every $i$.
-
-\bigskip
-
-\[
-\displayrewrite
-{ u\diistr*{y_1,\dotsc,y_i,\dotsc,y_n}y{\tup*{\dotso|y|\dotso}}}
-  { u\sub{\lambda y_1.t_1}{\lambda y_1.t_1\share*{}{y_1}} \dotso
-     \sub{\lambda y_i.t_i}{\lambda y_i.t_i\share*{y}{y_i}} \dotso
-     \sub{\lambda y_n.t_n}{\lambda y_n.t_n\share*{}{y_n}} }
+{ u\cxt* {\lambda y_1^{\tup*{\vv*x_1,\vv*z_1}}.t_1}\ldots\cxt* {\lambda
+y_n^{\tup*{\vv*x_n,\vv*z_n}}.t_n}\share* {\vv*x_1,\dots,\vv*x_n}{\tup y} }
+{ u\cxt* {\lambda y_1.(t_1\share* {\vv*x_1}{y_1})}\ldots\cxt* {\lambda
+y_n.(t_n\share* {\vv*x_n}{y_n})} }
 \]
 
 \end{document}
